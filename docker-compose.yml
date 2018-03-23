@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  db:
+    restart: 'unless-stopped'
+    image: 'mysql/mysql-server:5.6'
+    env_file: '.env'
+    volumes:
+      - 'db:/var/lib/mysql'
+  omeka_a11y:
+    restart: 'unless-stopped'
+    image: 'omeka_classic:2.6'
+    ports:
+      - '80:80'
+    links:
+      - 'db'
+    volumes:
+      - 'files:/var/www/html/files'
+
+volumes:
+  db:
+  files:
