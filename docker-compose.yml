@@ -7,9 +7,9 @@ services:
     env_file: '.env'
     volumes:
       - 'db:/var/lib/mysql'
-  omeka_a11y:
+  omeka_app:
     restart: 'unless-stopped'
-    image: 'omeka_classic:2.6'
+    image: 'omeka_classic:latest'
     ports:
       - '80:80'
     links:
