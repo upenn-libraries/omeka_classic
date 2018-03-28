@@ -16,7 +16,9 @@ services:
       - 'db'
     volumes:
       - 'files:/var/www/html/files'
+      - 'plugins:/var/www/html/plugins'
 
 volumes:
   db:
   files:
+  plugins:
