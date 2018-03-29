@@ -12,10 +12,9 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
         vim \
         zlib1g \
         zlib1g-dev && \
-        docker-php-ext-install exif mbstring mysqli pdo pdo_mysql zip && \
-        apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+        docker-php-ext-install exif mbstring mysqli pdo pdo_mysql zip
 
-COPY files/php.ini.example /etc/php5/apache2/conf.d/php.ini
+COPY files/ini/${OMEKA_VERSION}/php.ini.example /etc/php5/apache2/conf.d/php.ini
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
@@ -33,11 +32,11 @@ RUN mkdir -p /var/www/html/files
 
 RUN mkdir -p /var/www/html/files/thumbnails
 
-ADD files/.htaccess.example /var/www/html/.htaccess
+ADD files/ini/${OMEKA_VERSION}/.htaccess.example /var/www/html/.htaccess
 
-ADD files/db.ini.example /var/www/html/db.ini
+ADD files/ini/${OMEKA_VERSION}/db.ini.example /var/www/html/db.ini
 
-ADD files/config.ini.example /var/www/html/application/config/config.ini
+ADD files/ini/${OMEKA_VERSION}/config.ini.example /var/www/html/application/config/config.ini
 
 RUN chmod -R 755 files
 
@@ -49,12 +48,16 @@ RUN chown www-data:www-data db.ini
 
 RUN chown www-data:www-data application/config/config.ini
 
-COPY files/plugins/\*.zip /var/www/html/plugins/
+RUN rm -rf /var/www/html/themes/*
 
-RUN unzip -q /var/www/html/plugins/\*.zip -d /var/www/html/plugins
+COPY files/themes/${OMEKA_VERSION}/\*.zip /var/www/html/themes/
 
-RUN rm /var/www/html/plugins/*.zip
+COPY files/plugins/${OMEKA_VERSION}/\*.zip /var/www/html/plugins/
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN unzip /var/www/html/themes/\*.zip -d /var/www/html/themes && unzip /var/www/html/plugins/\*.zip -d /var/www/html/plugins
+
+RUN rm /var/www/html/themes/*.zip && rm /var/www/html/plugins/*.zip
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN a2enmod rewrite && service apache2 restart
