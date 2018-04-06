@@ -17,8 +17,10 @@ services:
     volumes:
       - 'files:/var/www/html/files'
       - 'plugins:/var/www/html/plugins'
+      - 'themes:/var/www/html/themes'
 
 volumes:
   db:
   files:
   plugins:
+  themes:
