@@ -7,6 +7,7 @@ ENV OMEKA_VERSION 2.6
 RUN apt-get update && apt-get install -qq -y --no-install-recommends \
         build-essential \
         ca-certificates \
+        git \
         imagemagick \
         unzip \
         vim \
