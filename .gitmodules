@@ -1,0 +1,6 @@
+[submodule "files/themes/2.6/upennlib_default"]
+	path = files/themes/2.6/upennlib_default
+	url = http://gitlab.library.upenn.edu/katherly/upennlib_default.git
+[submodule "files/themes/2.6/upennlib_emiglio"]
+	path = files/themes/2.6/upennlib_emiglio
+	url = http://gitlab.library.upenn.edu/katherly/upennlib_emiglio.git
