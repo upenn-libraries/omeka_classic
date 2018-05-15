@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
         zlib1g-dev && \
         docker-php-ext-install exif mbstring mysqli pdo pdo_mysql zip
 
-COPY files/ini/${OMEKA_VERSION}/php.ini.example /etc/php5/apache2/conf.d/php.ini
+COPY files/ini/${OMEKA_VERSION}/php.ini.example /usr/local/etc/php/conf.d/php.ini
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
