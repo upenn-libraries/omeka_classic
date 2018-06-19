@@ -1,23 +1,30 @@
-version: '2'
+version: '3.1'
+
+secrets:
+  db_ini:
+    file: 'db.ini'
+  mysql_env:
+    file: '.env'
 
 services:
   db:
     restart: 'unless-stopped'
-    image: 'mysql/mysql-server:5.6'
-    env_file: '.env'
+    image: 'omeka_db:latest'
     volumes:
       - 'db:/var/lib/mysql'
+    secrets:
+      - mysql_env
   omeka_app:
     restart: 'unless-stopped'
     image: 'omeka_classic:latest'
     ports:
       - '80:80'
-    links:
-      - 'db'
     volumes:
       - 'files:/var/www/html/files'
       - 'plugins:/var/www/html/plugins'
       - 'themes:/var/www/html/themes'
+    secrets:
+      - db_ini
 
 volumes:
   db:
