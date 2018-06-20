@@ -57,7 +57,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN a2enmod rewrite && service apache2 restart
 
-COPY entrypoint.sh /usr/local/bin
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["entrypoint.sh"]
 

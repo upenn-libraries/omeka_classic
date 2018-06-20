@@ -15,7 +15,6 @@ services:
     secrets:
       - mysql_env
   omeka_app:
-    restart: 'unless-stopped'
     image: 'omeka_classic:latest'
     ports:
       - '80:80'
