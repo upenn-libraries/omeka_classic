@@ -2,9 +2,9 @@ version: '3.1'
 
 secrets:
   db_ini:
-    file: 'db.ini'
+    file: 'images/omeka_classic/db.ini'
   mysql_env:
-    file: '.env'
+    file: 'images/omeka_db/.env'
 
 services:
   db:
