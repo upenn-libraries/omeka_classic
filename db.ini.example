@@ -10,7 +10,7 @@
 ; <http://omeka.org/codex/Database_Configuration_File>.
 
 [database]
-host     = "db"
+host     = "omeka_classic_db"
 username = "omeka"
 password = "omeka"
 dbname   = "omeka"
