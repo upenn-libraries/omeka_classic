@@ -8,7 +8,6 @@ secrets:
 
 services:
   db:
-    restart: 'unless-stopped'
     image: 'omeka_db:latest'
     volumes:
       - 'db:/var/lib/mysql'
@@ -20,13 +19,9 @@ services:
       - '80:80'
     volumes:
       - 'files:/var/www/html/files'
-      - 'plugins:/var/www/html/plugins'
-      - 'themes:/var/www/html/themes'
     secrets:
       - db_ini
 
 volumes:
   db:
   files:
-  plugins:
-  themes:
