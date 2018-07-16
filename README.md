@@ -1,27 +1,32 @@
 ## README for omeka_classic
 
-This is a Docker image and docker-compose workflow for deploying [Omeka Classic](https://omeka.org/classic/) applications.
+This is a set of Docker images and a Docker swarm workflow for deploying [Omeka Classic](https://omeka.org/classic/) applications.
 
 ### Supported Versions
 * Omeka Classic v. 2.6
 
 ### Requirements
 
-* Docker
-* docker-compose v.2 or higher
+* Docker CE 17.12 or higher
+* one or more Docker hosts configured as a swarm
+
+### Building the Images
+
+This repository contains two images: `omeka_classic` and `omeka_db`. To build these images, run the following commands from the root of the repository:
+
+```
+docker build -t omeka_classic:latest images/omeka_classic
+docker build -t omeka_db:latest images/omeka_db
+```
+
+Note that the `latest` tag is the tag referred to in the `docker-compose.yml` file. If you use a different tag, update the `docker-compose.yml` file to refer to the new tag before attempting a deployment.
 
 ### Deployment
 
-To deploy, clone this repo, then build the image tagged as `:latest` to keep it integrated with the docker-compose file (or tag it whatever you want and just change the tag referenced in the `docker-compose.yml` file).  Build the image this way by issuing the following command from the root of the cloned git repository for this image:
+To deploy, clone this repo, build the images as directed in the previous section, and execute the following command from the root of the repository:
 
 ```
-docker build -t omeka_classic:latest .
-```
-
-To spin up an instance:
-
-```
-docker-compose up
+docker stack deploy -c docker-compose.yml omeka_classic
 ```
 
 Your application should be available at port 80 in the browser.
@@ -74,4 +79,4 @@ Omeka applications deployed with this image ship with the following plugins:
 
 ### Themes
 
-This Docker image contains two themes featuring Penn Libraries branding, forked from the core Omeka themes [Thanks, Roy](https://omeka.org/classic/themes/default/) and [Emiglio](https://omeka.org/classic/themes/emiglio/).
+The `omeka_classic` image contains two themes featuring Penn Libraries branding, forked from the core Omeka themes [Thanks, Roy](https://omeka.org/classic/themes/default/) and [Emiglio](https://omeka.org/classic/themes/emiglio/).
