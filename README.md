@@ -23,13 +23,24 @@ Note that the `latest` tag is the tag referred to in the `docker-compose.yml` fi
 
 ### Deployment
 
-To deploy, clone this repo, build the images as directed in the previous section, and execute the following command from the root of the repository:
+To deploy, clone this repo and build the images as directed in the previous section. Execute the following commands to create the environment files that will be mapped into the `omeka_classic` and `omeka_db` services as secrets upon deployment:
+
+```
+cp images/omeka_classic/db.ini.example images/omeka_classic/db.ini
+cp images/omeka_db/.env.example images/omeka_db/.env
+```
+
+Edit the newly created `db.ini` and `.env` files to use your desired database credentials. Note that `username`, `password`, and `database` in `dbi.ini` must match `MYSQL_USER`, `MYSQL_PASSWORD`, and `MYSQL_DATABASE` in `.env`, respectively. Execute the following command from the root of the repository to deploy the application to the swarm:
 
 ```
 docker stack deploy -c docker-compose.yml omeka_classic
 ```
 
 Your application should be available at port 80 in the browser.
+
+### Custom Entrypoints
+
+The images defined in this repository use custom entrypoint scripts to handle the secrets that are mapped into the services. These entrypoint scripts are named `entrypoint.sh` and can be found in `images/omeka_classic` and `images/omeka_db`. The `omeka_classic` entrypoint script handles installing the `db_ini` secret as required by Omeka classic, and the `omeka_db` entrypoint script maps the values specified in the `mysql_env` secret to environment variables used to initialize MySQL. A description of these environment variables and their purpose can be found on the Docker Hub page for the [mysql/mysql-server image](https://hub.docker.com/r/mysql/mysql-server/) under the *Docker Environment Variables* section.
 
 ### Plugins
 
