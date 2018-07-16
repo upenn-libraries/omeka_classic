@@ -40,7 +40,7 @@ Your application should be available at port 80 in the browser.
 
 ### Custom Entrypoints
 
-The images defined in this repository use custom entrypoint scripts to handle the secrets that are mapped into the services. These entrypoint scripts are named `entrypoint.sh` and can be found in `images/omeka_classic` and `images/omeka_db`. The `omeka_classic` entrypoint script handles installing the `db_ini` secret as required by Omeka classic, and the `omeka_db` entrypoint script maps the values specified in the `mysql_env` secret to environment variables used to initialize MySQL. A description of these environment variables and their purpose can be found on the Docker Hub page for the [mysql/mysql-server image](https://hub.docker.com/r/mysql/mysql-server/) under the *Docker Environment Variables* section.
+The images defined in this repository use custom entrypoint scripts to handle the secrets that are mapped into the services. These entrypoint scripts are named `entrypoint.sh` and can be found in `images/omeka_classic` and `images/omeka_db`. The `omeka_classic` entrypoint script handles installing the `db_ini` secret as required by Omeka Classic, and the `omeka_db` entrypoint script maps the values specified in the `mysql_env` secret to environment variables used to initialize MySQL. A description of these environment variables and their purpose can be found on the Docker Hub page for the [mysql/mysql-server image](https://hub.docker.com/r/mysql/mysql-server/) under the *Docker Environment Variables* section.
 
 ### Plugins
 
