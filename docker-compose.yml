@@ -22,7 +22,7 @@ services:
       - omeka_db_password
       - omeka_db_root_password
   omeka_app:
-    image: 'omeka_classic:latest'
+    image: 'quay.io/upennlibraries/omeka_classic:latest'
     ports:
       - '80:80'
     volumes:
