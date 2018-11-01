@@ -22,14 +22,15 @@ Note that the `latest` tag is the tag referred to in the `docker-compose.yml` fi
 
 ### Deployment
 
-To deploy, clone this repo and build the images as directed in the previous section. Execute the following commands to create the environment files that will be mapped into the `omeka_classic` and `omeka_db` services as secrets upon deployment:
+To deploy, clone this repo and build the image as directed in the previous section. Execute the following commands to create the configuration file and database credentials that will be mapped into the `omeka_app` and `db` services as secrets upon deployment:
 
 ```
+echo 'your_db_password' | docker secret create omeka_db_password -
+echo 'your_db_root_password' | docker secret create omeka_db_root_password -
 cp images/omeka_classic/db.ini.example images/omeka_classic/db.ini
-cp images/omeka_db/.env.example images/omeka_db/.env
 ```
 
-Edit the newly created `db.ini` and `.env` files to use your desired database credentials. Note that `username`, `password`, and `database` in `dbi.ini` must match `MYSQL_USER`, `MYSQL_PASSWORD`, and `MYSQL_DATABASE` in `.env`, respectively. Execute the following command from the root of the repository to deploy the application to the swarm:
+Edit the newly created `db.ini` file to use the database credentials that were passed to `docker secret create`. Note that `username`, `password`, and `database` in `dbi.ini` must match `MYSQL_USER`, `MYSQL_PASSWORD`, and `MYSQL_DATABASE` in `docker-compose.yml` and your `omeka_db_password` secret, respectively. Execute the following command from the root of the repository to deploy the application to the swarm:
 
 ```
 docker stack deploy -c docker-compose.yml omeka_classic
