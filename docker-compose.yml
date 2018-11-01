@@ -28,7 +28,8 @@ services:
     volumes:
       - 'files:/var/www/html/files'
     secrets:
-      - db_ini
+      - source: db_ini
+        target: /var/www/html/db.ini
 
 volumes:
   db:
