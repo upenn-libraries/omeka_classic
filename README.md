@@ -10,13 +10,12 @@ This is a set of Docker images and a Docker swarm workflow for deploying [Omeka 
 * Docker CE 17.12 or higher
 * one or more Docker hosts configured as a swarm
 
-### Building the Images
+### Building the Image
 
-This repository contains two images: `omeka_classic` and `omeka_db`. To build these images, run the following commands from the root of the repository:
+To build the image, run the following command from the root of the repository:
 
 ```
 docker build -t omeka_classic:latest images/omeka_classic
-docker build -t omeka_db:latest images/omeka_db
 ```
 
 Note that the `latest` tag is the tag referred to in the `docker-compose.yml` file. If you use a different tag, update the `docker-compose.yml` file to refer to the new tag before attempting a deployment.
