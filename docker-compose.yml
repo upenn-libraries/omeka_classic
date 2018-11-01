@@ -3,24 +3,33 @@ version: '3.1'
 secrets:
   db_ini:
     file: 'images/omeka_classic/db.ini'
-  mysql_env:
-    file: 'images/omeka_db/.env'
+  omeka_db_password:
+    external: true
+  omeka_db_root_password:
+    external: true
 
 services:
   db:
-    image: 'omeka_db:latest'
+    image: 'mysql:5.6'
+    environment:
+      MYSQL_DATABASE: omeka
+      MYSQL_PASSWORD_FILE: /run/secrets/omeka_db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/omeka_db_root_password
+      MYSQL_USER: omeka
     volumes:
       - 'db:/var/lib/mysql'
     secrets:
-      - mysql_env
+      - omeka_db_password
+      - omeka_db_root_password
   omeka_app:
-    image: 'omeka_classic:latest'
+    image: 'quay.io/upennlibraries/omeka_classic:latest'
     ports:
       - '80:80'
     volumes:
       - 'files:/var/www/html/files'
     secrets:
-      - db_ini
+      - source: db_ini
+        target: /var/www/html/db.ini
 
 volumes:
   db:
