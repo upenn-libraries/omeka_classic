@@ -30,6 +30,9 @@ services:
     secrets:
       - source: db_ini
         target: /var/www/html/db.ini
+        uid: '33'
+        gid: '33'
+        mode: 0440
 
 volumes:
   db:

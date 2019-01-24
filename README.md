@@ -10,37 +10,33 @@ This is a set of Docker images and a Docker swarm workflow for deploying [Omeka 
 * Docker CE 17.12 or higher
 * one or more Docker hosts configured as a swarm
 
-### Building the Images
+### Building the Image
 
-This repository contains two images: `omeka_classic` and `omeka_db`. To build these images, run the following commands from the root of the repository:
+To build the image, run the following command from the root of the repository:
 
 ```
 docker build -t omeka_classic:latest images/omeka_classic
-docker build -t omeka_db:latest images/omeka_db
 ```
 
 Note that the `latest` tag is the tag referred to in the `docker-compose.yml` file. If you use a different tag, update the `docker-compose.yml` file to refer to the new tag before attempting a deployment.
 
 ### Deployment
 
-To deploy, clone this repo and build the images as directed in the previous section. Execute the following commands to create the environment files that will be mapped into the `omeka_classic` and `omeka_db` services as secrets upon deployment:
+To deploy, clone this repo and build the image as directed in the previous section. Execute the following commands to create the configuration file and database credentials that will be mapped into the `omeka_app` and `db` services as secrets upon deployment:
 
 ```
+echo 'your_db_password' | docker secret create omeka_db_password -
+echo 'your_db_root_password' | docker secret create omeka_db_root_password -
 cp images/omeka_classic/db.ini.example images/omeka_classic/db.ini
-cp images/omeka_db/.env.example images/omeka_db/.env
 ```
 
-Edit the newly created `db.ini` and `.env` files to use your desired database credentials. Note that `username`, `password`, and `database` in `dbi.ini` must match `MYSQL_USER`, `MYSQL_PASSWORD`, and `MYSQL_DATABASE` in `.env`, respectively. Execute the following command from the root of the repository to deploy the application to the swarm:
+Edit the newly created `db.ini` file to use the database credentials that were passed to `docker secret create`. Note that `username`, `password`, and `database` in `dbi.ini` must match `MYSQL_USER`, `MYSQL_PASSWORD`, and `MYSQL_DATABASE` in `docker-compose.yml` and your `omeka_db_password` secret, respectively. Execute the following command from the root of the repository to deploy the application to the swarm:
 
 ```
 docker stack deploy -c docker-compose.yml omeka_classic
 ```
 
 Your application should be available at port 80 in the browser.
-
-### Custom Entrypoints
-
-The images defined in this repository use custom entrypoint scripts to handle the secrets that are mapped into the services. These entrypoint scripts are named `entrypoint.sh` and can be found in `images/omeka_classic` and `images/omeka_db`. The `omeka_classic` entrypoint script handles installing the `db_ini` secret as required by Omeka Classic, and the `omeka_db` entrypoint script maps the values specified in the `mysql_env` secret to environment variables used to initialize MySQL. A description of these environment variables and their purpose can be found on the Docker Hub page for the [mysql/mysql-server image](https://hub.docker.com/r/mysql/mysql-server/) under the *Docker Environment Variables* section.
 
 ### Plugins
 
