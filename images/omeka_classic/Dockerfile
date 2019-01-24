@@ -45,6 +45,8 @@ RUN chown www-data:www-data application/config/config.ini
 
 RUN rm -rf /var/www/html/themes/* && rm /var/www/html/db.ini
 
+RUN rm -rf /var/www/html/plugins/ExhibitBuilder 
+
 COPY files/themes/${OMEKA_VERSION}/\*.zip /var/www/html/themes/
 
 COPY files/plugins/${OMEKA_VERSION}/\*.zip /var/www/html/plugins/
