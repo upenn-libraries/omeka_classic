@@ -183,8 +183,8 @@ mail.transport.type = "Sendmail"
 ; to switch to SMTP for sending mail through Omeka. Your configuration
 ; may not require all of the options listed.
 ;
-; mail.transport.type = "Smtp"
-; mail.transport.host = ""
+mail.transport.type = "Smtp"
+mail.transport.host = "mailrelay.library.upenn.int"
 ; mail.transport.port = ###     ; Port number, if applicable.
 ; mail.transport.name = ""      ; Local client hostname, e.g. "localhost"
 ; mail.transport.auth = "login" ; For authentication, if required.
