@@ -1,0 +1,75 @@
+include:
+  - project: "devops/gitlab/ci-templates/docker"
+    ref: "master"
+    file:
+      - ".build_docker_image.yml"
+      - ".push_docker_image.yml"
+      - ".remove_docker_image.yml"
+  - project: "devops/gitlab/ci-templates/sast"
+    ref: "master"
+    file:
+      - ".shiftleft_container_scanning.yml"
+      - ".trivy_container_scanning.yml"
+  - template: "Workflows/MergeRequest-Pipelines.gitlab-ci.yml"
+
+stages:
+  - .pre
+  - sast
+  - push
+  - .post
+
+build_image:
+  stage: .pre
+  extends:
+    - .build_docker_image
+  variables:
+    DOCKER_BUILD_CONTEXT: images/omeka_classic/
+    DOCKERFILE_FILENAME: Dockerfile
+    DOCKERFILE_PATH: images/omeka_classic/
+  tags:
+    - build
+
+shiftleft_container_scanning:
+  stage: sast
+  extends:
+    - .shiftleft_container_scanning
+  tags:
+    - build
+  allow_failure: true
+
+trivy_container_scanning:
+  stage: sast
+  extends:
+    - .trivy_container_scanning
+  tags:
+    - build
+  allow_failure: true
+
+push_latest_image_to_registry:
+  stage: push
+  extends:
+    - .push_docker_image
+  variables:
+    IMAGE_TAGS: "${CI_COMMIT_REF_SLUG} ${CI_COMMIT_SHA} ${CI_COMMIT_SHORT_SHA} ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} latest"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  tags:
+    - build
+
+push_image_to_registry:
+  stage: push
+  extends:
+    - .push_docker_image
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+  tags:
+    - build
+
+remove_image:
+  stage: .post
+  extends:
+    - .remove_docker_image
+  rules:
+    - when: always
+  tags:
+    - build
